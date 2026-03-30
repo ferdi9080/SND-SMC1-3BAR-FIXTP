@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  signal-bot:
+    build: .
+    container_name: tv_signal_bot
+    restart: unless-stopped
+    volumes:
+      # Mount folder charts agar gambar tidak hilang ketika container di-restart
+      - ./charts:/app/charts
+    environment:
+      # ===================== WAJIB DIISI =====================
+      - TELEGRAM_BOT_TOKEN=8234770186:AAFpfeohygIDg7Fw_LJLLZ3jZKnJZL-I_XU
+      - TELEGRAM_CHAT_ID=-1002163563793
+      
+      # (SANGAT DISARANKAN) Pisahkan chat:
+      # - SIGNALS: hanya pesan entry (dibaca Cornix)
+      # - UPDATES: update + gambar chart (Cornix aman)
+      - TELEGRAM_CHAT_ID_SIGNALS=
+      - TELEGRAM_CHAT_ID_UPDATES=
+
+      # ===================== TRADINGVIEW Akun (Opsional) =====
+      - TV_USERNAME=
+      - TV_PASSWORD=
+
+      # ===================== CORNIX =====================
+      - CORNIX_ENABLED=1
+      - CORNIX_EXCHANGE=Binance Futures
+      - CORNIX_LEVERAGE=Cross (20X)
+      - MOVE_SL_TO_ENTRY_AFTER_TP1=1
+      
+      # ===================== UPDATE AMAN =====================
+      - CORNIX_SAFE_UPDATES=1
+
+      # ===================== TP/SL ROI =====================
+      - TP_SL_MODE=ROI
+      - LEVERAGE=20
+      - TP_ROI_1=75
+      - TP_ROI_2=120
+      - TP_ROI_3=200
+      - SL_ROI=100
+
+      # ===================== CHART IMAGE (ZONA SAJA) =====================
+      - SEND_CHART_IMAGE=1
+      - CHART_IMAGE_CHAT=UPDATES
+      - CHART_BARS=120
+      - CHART_DPI=140
+      - CHART_SHOW_LABELS=0
+
+      # ===================== RETRY TRADINGVIEW =====================
+      - TV_RETRY=5
+      - TV_RETRY_WAIT=2
+
+      # ===================== LAINNYA =====================
+      - SYMBOLS=ALL
+      - MAX_SYMBOLS=80
+      - LOOP_SLEEP_SEC=10
